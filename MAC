@@ -1,0 +1,37 @@
+from cryptography.hazmat.primitives import hmac
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import hashes
+import os
+
+def generate_key():
+    # Generate a random key for HMAC
+    return os.urandom(32)
+
+def generate_hmac(key, message):
+    h = hmac.HMAC(key, hashes.SHA256(), backend=default_backend())
+    h.update(message.encode())
+    return h.finalize()
+
+def verify_hmac(key, message, received_hmac):
+    h = hmac.HMAC(key, hashes.SHA256(), backend=default_backend())
+    h.update(message.encode())
+    try:
+        h.verify(received_hmac)
+        return True  # The MAC is valid
+    except:
+        return False  # The MAC is not valid
+
+# Example usage
+message = "Hello, MAC!"
+key = generate_key()
+
+# Generate HMAC
+mac = generate_hmac(key, message)
+print("Generated HMAC:", mac)
+
+# Verify HMAC
+is_valid = verify_hmac(key, message, mac)
+if is_valid:
+    print("MAC is valid. The message is authentic.")
+else:
+    print("MAC is not valid. The message may be compromised.")
