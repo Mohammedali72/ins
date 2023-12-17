@@ -1,3 +1,4 @@
+# MAC Message Authentication Code
 from cryptography.hazmat.primitives import hmac
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
