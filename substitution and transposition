@@ -1,0 +1,81 @@
+#Substitution Ceasar Cipher
+def caesar_cipher_encrypt(plaintext, shift):
+    result = ""
+    for char in plaintext:
+        if char.isalpha():
+            # Determine the case (uppercase/lowercase) of the character
+            case = str.isupper(char)
+            # Apply the shift and ensure the result is within the alphabetic range
+            shifted_char = chr((ord(char) + shift - ord('A' if case else 'a')) % 26 + ord('A' if case else 'a'))
+            result += shifted_char
+        else:
+            result += char
+    return result
+
+def caesar_cipher_decrypt(ciphertext, shift):
+    # Decryption is simply the reverse of encryption with a negative shift
+    return caesar_cipher_encrypt(ciphertext, -shift)
+
+# Example usage
+plaintext = "Hello, World!"
+shift = 3
+encrypted_text = caesar_cipher_encrypt(plaintext, shift)
+decrypted_text = caesar_cipher_decrypt(encrypted_text, shift)
+
+print("Original Text:", plaintext)
+print("Encrypted Text:", encrypted_text)
+print("Decrypted Text:", decrypted_text)
+
+
+#Transposition and railfence cipher
+def rail_fence_encrypt(plaintext, rails):
+    # Create an empty matrix to hold the rails
+    matrix = [['' for _ in range(len(plaintext))] for _ in range(rails)]
+
+    # Fill in the matrix with the characters of the plaintext
+    row, direction = 0, 1
+    for char in plaintext:
+        matrix[row][0] += char
+        row += direction
+        if row == rails or row == -1:
+            direction *= -1
+            row += 2 * direction
+
+    # Combine the rows to get the encrypted text
+    encrypted_text = ''.join([''.join(row) for row in matrix])
+    return encrypted_text
+
+def rail_fence_decrypt(ciphertext, rails):
+    # Create an empty matrix to hold the rails
+    matrix = [['' for _ in range(len(ciphertext))] for _ in range(rails)]
+
+    # Fill in the matrix with placeholders
+    row, direction = 0, 1
+    for i in range(len(ciphertext)):
+        matrix[row][i] = '*'
+        row += direction
+        if row == rails or row == -1:
+            direction *= -1
+            row += 2 * direction
+
+    # Fill in the matrix with the characters of the ciphertext
+    index = 0
+    for i in range(rails):
+        for j in range(len(ciphertext)):
+            if matrix[i][j] == '*':
+                matrix[i][j] = ciphertext[index]
+                index += 1
+
+    # Read the matrix row by row to get the decrypted text
+    decrypted_text = ''.join([''.join(row) for row in matrix])
+    return decrypted_text
+
+# Example usage
+plaintext = "Hello, World!"
+rails = 3
+encrypted_text = rail_fence_encrypt(plaintext, rails)
+decrypted_text = rail_fence_decrypt(encrypted_text, rails)
+
+print("Original Text:", plaintext)
+print("Encrypted Text:", encrypted_text)
+print("Decrypted Text:", decrypted_text)
