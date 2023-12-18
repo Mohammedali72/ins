@@ -1,0 +1,46 @@
+#md5
+
+import hashlib
+
+def md5_hash(message):
+    # Create an MD5 hash object
+    md5_hasher = hashlib.md5()
+
+    # Update the hash object with the bytes of the message
+    md5_hasher.update(message.encode('utf-8'))
+
+    # Get the hexadecimal representation of the hash
+    hash_result = md5_hasher.hexdigest()
+
+    return hash_result
+
+# Example usage
+message = "Hello, MD5!"
+md5_result = md5_hash(message)
+
+print("Original Message:", message)
+print("MD5 Hash:", md5_result)
+
+
+import hashlib
+
+def sha256_hash(message):
+    # Create a SHA-256 hash object
+    sha256_hasher = hashlib.sha256()
+
+    # Update the hash object with the bytes of the message
+    sha256_hasher.update(message.encode('utf-8'))
+
+    # Get the hexadecimal representation of the hash
+    hash_result = sha256_hasher.hexdigest()
+
+    return hash_result
+
+
+#SHA
+# Example usage
+message = "Hello, SHA-256!"
+sha256_result = sha256_hash(message)
+
+print("Original Message:", message)
+print("SHA-256 Hash:", sha256_result)
